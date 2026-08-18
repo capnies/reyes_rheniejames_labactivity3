@@ -1,0 +1,14 @@
+{
+    "ITM001": {
+        "item_id": "ITM001",
+        "name": "Mechanical Keyboard",
+        "price": 120.0,
+        "quantity": 20
+    },
+    "ITM002": {
+        "item_id": "ITM002",
+        "name": "Wireless Mouse",
+        "price": 45.0,
+        "quantity": 21
+    }
+}
