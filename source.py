@@ -84,20 +84,63 @@ class InventoryManager:
                     self.inventory = {}
 
 #Since we are now dealing with OOP concepts, we can instead do test cases automatically to save time.
+def display_menu():
+    print("\n===== STORE INVENTORY SYSTEM =====")
+    print("1. Register New Item")
+    print("2. Restock Item")
+    print("3. Sell Item")
+    print("4. View All Inventory")
+    print("5. Exit")
+
+def view_inventory(manager):
+    if not manager.inventory:
+        print("[Info] Inventory is empty.")
+        return
+    print("\n--- CURRENT INVENTORY ---")
+    for item in manager.inventory.values():
+        print(f"ID: {item.item_id} | Name: {item.name} | Price: ${item.price:.2f} | Qty: {item.quantity}")
+
 if __name__ == "__main__":
     print("STARTING STORE INVENTORY SYSTEM")
     manager = InventoryManager()
 
-    print("\n--- TEST CASE 1: Adding New Items ---")
-    item1 = InventoryItem("ITM001", "Mechanical Keyboard", 120.00, 10)
-    item2 = InventoryItem("ITM002", "Wireless Mouse", 45.00, 25)
-    manager.register_item(item1)
-    manager.register_item(item2)
+    while True:
+        display_menu()
+        choice = input("Enter your choice (1-5): ").strip()
 
-    print("\n--- TEST CASE 2: Modifying Stock ---")
-    manager.process_restock("ITM001", 5)
-    manager.process_sale("ITM002", 2)
+        if choice == "1":
+            item_id = input("Enter Item ID: ").strip()
+            name = input("Enter Item Name: ").strip()
+            try:
+                price = float(input("Enter Price: ").strip())
+                quantity = int(input("Enter Initial Quantity: ").strip())
+                new_item = InventoryItem(item_id, name, price, quantity)
+                manager.register_item(new_item)
+            except ValueError:
+                print("[Error] Price and quantity must be valid numbers.")
 
-    print("\n--- TEST CASE 3: Error Handling & Validation ---")
-    manager.process_sale("ITM001", 50)
-    manager.register_item(item1)
+        elif choice == "2":
+            item_id = input("Enter Item ID to restock: ").strip()
+            try:
+                amount = int(input("Enter amount to add: ").strip())
+                manager.process_restock(item_id, amount)
+            except ValueError:
+                print("[Error] Amount must be a valid number.")
+
+        elif choice == "3":
+            item_id = input("Enter Item ID to sell: ").strip()
+            try:
+                amount = int(input("Enter amount to sell: ").strip())
+                manager.process_sale(item_id, amount)
+            except ValueError:
+                print("[Error] Amount must be a valid number.")
+
+        elif choice == "4":
+            view_inventory(manager)
+
+        elif choice == "5":
+            print("Exiting Store Inventory System. Goodbye!")
+            break
+
+        else:
+            print("[Error] Invalid choice. Please select 1-5.")
